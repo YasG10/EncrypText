@@ -1,7 +1,12 @@
 package Encrypt;
+import org.jetbrains.annotations.NotNull;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 
 public class Ventana extends JFrame{
@@ -23,23 +28,12 @@ public class Ventana extends JFrame{
         Encryptar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*
-                Encrypt enc = new Encrypt();
 
-                texto = textA.getText();
-                String textoOriginal = texto;
-                int desplazamiento = 3;
-                String textoEncriptado = enc.encriptar(textoOriginal, desplazamiento);
-                System.out.println("Texto encriptado: " + textoEncriptado);
-                textB.setText(textoEncriptado);
-                String textoDesencriptado = enc.desencriptar(textoEncriptado, desplazamiento);
-                System.out.println("Texto desencriptado: " + textoDesencriptado);
-
-                 */
                 AES enc = new AES();
                 texto = textA.getText();
                 String key = "YasTick";
-                String iv =  "/gs8945}][@q24[#";
+                byte [] iv = IVGenerator.generateIV();
+
                 try {
                     if(texto.isEmpty()){
                         JOptionPane.showMessageDialog(null, "NO se puede encryptar algo vacio");
@@ -59,18 +53,11 @@ public class Ventana extends JFrame{
         descrypt.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                /*
-                Encrypt enc1 = new Encrypt();
-                textoD = textC.getText();
-                int desplazamiento = 3;
-                String textoDesencriptado = enc1.desencriptar(textoD, desplazamiento);
-                textD.setText(textoDesencriptado);
 
-                 */
                 AES enc = new AES();
                 texto = textC.getText();
                 String key = "YasTick";
-                String iv =  "/gs8945}][@q24[#";
+                byte [] iv = IVGenerator.generateIV();
                 try {
                     String cifrar = enc.decrypt(key, iv, texto);
                     textD.setText(cifrar);

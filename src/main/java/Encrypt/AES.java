@@ -13,9 +13,9 @@ public class AES {
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
     private static final String HASH_ALGORITHM = "SHA-256";
 
-    public static String encrypt(String key, String iv, String plaintext) throws Exception {
+    public static String encrypt(String key, byte[] iv, String plaintext) throws Exception {
         SecretKeySpec secretKeySpec = generateKey(key);
-        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes(StandardCharsets.UTF_8));
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
@@ -25,9 +25,9 @@ public class AES {
         return Base64.getEncoder().encodeToString(encrypted);
     }
 
-    public static String decrypt(String key, String iv, String ciphertext) throws Exception {
+    public static String decrypt(String key, byte[] iv, String ciphertext) throws Exception {
         SecretKeySpec secretKeySpec = generateKey(key);
-        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv.getBytes(StandardCharsets.UTF_8));
+        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
 
         Cipher cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
@@ -37,6 +37,7 @@ public class AES {
 
         return new String(decrypted, StandardCharsets.UTF_8);
     }
+
 
     private static SecretKeySpec generateKey(String key) throws Exception {
         byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
@@ -54,19 +55,23 @@ public class AES {
         System.out.println(iv.toString());
 
         String plaintext = "Hola Mundo";
-
+        /*
         try {
             // Cifrado
             String ciphertext = AES.encrypt(key, iv, plaintext);
             System.out.println("Texto cifrado: " + ciphertext);
 
             // Descifrado
-            String decrypted = AES.decrypt(key, iv, ciphertext);
+            String decrypted = AES.decrypt(key,iv, ciphertext);
             System.out.println("Texto descifrado: " + decrypted);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+         */
     }
+
+
 
 }
 
