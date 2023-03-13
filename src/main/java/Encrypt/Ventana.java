@@ -41,8 +41,14 @@ public class Ventana extends JFrame{
                 String key = "YasTick";
                 String iv =  "/gs8945}][@q24[#";
                 try {
-                    String cifrar = enc.encrypt(key, iv, texto);
-                    textB.setText(cifrar);
+                    if(texto.isEmpty()){
+                        JOptionPane.showMessageDialog(null, "NO se puede encryptar algo vacio");
+                    }
+                    else{
+                        String cifrar = enc.encrypt(key, iv, texto);
+                        textB.setText(cifrar);
+                    }
+
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
@@ -61,6 +67,16 @@ public class Ventana extends JFrame{
                 textD.setText(textoDesencriptado);
 
                  */
+                AES enc = new AES();
+                texto = textC.getText();
+                String key = "YasTick";
+                String iv =  "/gs8945}][@q24[#";
+                try {
+                    String cifrar = enc.decrypt(key, iv, texto);
+                    textD.setText(cifrar);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }
