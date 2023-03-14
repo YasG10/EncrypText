@@ -1,16 +1,15 @@
-package Encrypt;
+package Encrypt.UI;
 
+import Encrypt.AES;
+import Encrypt.Utilty.IVGenerator;
 import io.github.cdimascio.dotenv.Dotenv;
+
 import lombok.Getter;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
 @Getter
 @Setter
@@ -36,8 +35,9 @@ public class Ventana extends JFrame {
 
                 AES enc = new AES();
                 texto = textA.getText();
-                String key = "YasTick";
-                byte[] iv = IVGenerator.generateIV();
+                Dotenv dotenv = Dotenv.load();
+                var key = dotenv.get("key");
+                var iv = IVGenerator.generateIV();
 
                 try {
                     if (texto.isEmpty()) {

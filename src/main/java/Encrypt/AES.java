@@ -1,5 +1,8 @@
 package Encrypt;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -13,66 +16,43 @@ public class AES {
     private static final String ALGORITHM = "AES/CBC/PKCS5Padding";
     private static final String HASH_ALGORITHM = "SHA-256";
 
-    public static String encrypt(String key, byte[] iv, String plaintext) throws Exception {
-        SecretKeySpec secretKeySpec = generateKey(key);
-        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+    public static String encrypt(String key, byte[] iv, @NotNull String plaintext) throws Exception {
+        var secretKeySpec = generateKey(key);
+        var ivParameterSpec = new IvParameterSpec(iv);
 
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        var cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec, ivParameterSpec);
 
-        byte[] encrypted = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
+        var encrypted = cipher.doFinal(plaintext.getBytes(StandardCharsets.UTF_8));
 
         return Base64.getEncoder().encodeToString(encrypted);
     }
 
-    public static String decrypt(String key, byte[] iv, String ciphertext) throws Exception {
-        SecretKeySpec secretKeySpec = generateKey(key);
-        IvParameterSpec ivParameterSpec = new IvParameterSpec(iv);
+    @Contract("_, _, _ -> new")
+    public static @NotNull String decrypt(String key, byte[] iv, String ciphertext) throws Exception {
+        var secretKeySpec = generateKey(key);
+        var ivParameterSpec = new IvParameterSpec(iv);
 
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
+        var cipher = Cipher.getInstance(ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
 
-        byte[] decoded = Base64.getDecoder().decode(ciphertext);
-        byte[] decrypted = cipher.doFinal(decoded);
+        var decoded = Base64.getDecoder().decode(ciphertext);
+        var decrypted = cipher.doFinal(decoded);
 
         return new String(decrypted, StandardCharsets.UTF_8);
     }
 
 
-    private static SecretKeySpec generateKey(String key) throws Exception {
-        byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
+    @Contract("_ -> new")
+    private static @NotNull SecretKeySpec generateKey(@NotNull String key) throws Exception {
+        var keyBytes = key.getBytes(StandardCharsets.UTF_8);
 
-        MessageDigest sha = MessageDigest.getInstance(HASH_ALGORITHM);
+        var sha = MessageDigest.getInstance(HASH_ALGORITHM);
         keyBytes = sha.digest(keyBytes);
         keyBytes = Arrays.copyOf(keyBytes, 16);
 
         return new SecretKeySpec(keyBytes, "AES");
     }
-
-    public static void main(String[] args) {
-        String key = "clave secreta";
-        String iv =  "/gs8945}][@q24[#";
-        System.out.println(iv.toString());
-
-
-
-        String plaintext = "Hola Mundo";
-        /*
-        try {
-            // Cifrado
-            String ciphertext = AES.encrypt(key, iv, plaintext);
-            System.out.println("Texto cifrado: " + ciphertext);
-
-            // Descifrado
-            String decrypted = AES.decrypt(key,iv, ciphertext);
-            System.out.println("Texto descifrado: " + decrypted);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-         */
-    }
-
 
 
 }

@@ -1,5 +1,5 @@
 package Encrypt;
-import Encrypt.Ventana;
+import Encrypt.UI.Ventana;
 import javax.swing.*;
 
 public class Encrypt {

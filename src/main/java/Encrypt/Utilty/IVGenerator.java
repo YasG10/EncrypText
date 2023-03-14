@@ -1,11 +1,13 @@
-package Encrypt;
+package Encrypt.Utilty;
+import org.jetbrains.annotations.NotNull;
+
 import java.security.SecureRandom;
 
 import static java.security.DrbgParameters.nextBytes;
 
 public class IVGenerator {
 
-    public static byte[] generateIV() {
+    public static byte @NotNull [] generateIV() {
         SecureRandom random = new SecureRandom();
         byte[] iv = new byte[16];
         random.nextBytes(iv);
